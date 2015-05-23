@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Home NAS</title>
+		<link rel="stylesheet" href="css/foundation.css" />
+		<link rel="stylesheet" href="css/miscStyle.css" />
+		<script src = "js/commonFunction.js"></script>
+		
+	</head>
+	<body>
+		
+		<div class="row">
+			<div class="large-12 columns">
+				<div class="nav-bar right">
+					<ul class="button-group">
+						<li><a href="index.html" class="button">Log In</a></li>
+					</ul>
+				</div>
+				<h1>Home NAS</h1>
+				<hr/>
+			</div>
+		</div>
+     	
+     	<div class="row">
+	        <div class="large-9 columns" role="content">
+	        	
+					<article>
+						<div id = "breadCrumb">					
+							<!-- This is where the directory bread crumbs get populated -->
+						</div>
+						<div style = "min-height : 400px;" class="row">
+							<div class="large-6 columns">
+								<ul id = "fileList" class="side-nav">
+									<!-- This area populates the list of discovered files in the current directory -->
+								</ul>
+							</div>
+							<div id = "preview" class="large-6 columns">
+								<!-- preview image goes here -->
+							</div>
+						</div>
+					</article>
+				
+			</div>
+
+			<aside class="large-3 columns">
+				<h5>Directories</h5>
+				<ul id = "directoryList" class="side-nav">
+					<!-- This area populates the list of discovered directories in the current directory -->
+				</ul>
+				
+				<div id = "fileInfoPanel">
+					<!-- This area populates the information for the individual file -->
+				</div>
+			</aside>
+
+		</div>
+
+		<footer class="row">
+			<div class="large-12 columns">
+				<hr/>
+				<div class="row">
+					<div class="large-6 columns">
+						<p>Tam Tran. May 19 2015</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+    
+		<script>setCurr(1, 'Downloads');</script>
+	</body>
+</html>
