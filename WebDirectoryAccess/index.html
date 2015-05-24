@@ -11,10 +11,7 @@
 		
 		<div class="row">
 			<div class="large-12 columns">
-				<div class="nav-bar right">
-					<ul class="button-group">
-						<li><a href="index.html" class="button">Log In</a></li>
-					</ul>
+				<div id = "navBar" class="nav-bar right">
 				</div>
 				<h1>Home NAS</h1>
 				<hr/>
@@ -28,9 +25,9 @@
 						<div id = "breadCrumb">					
 							<!-- This is where the directory bread crumbs get populated -->
 						</div>
-						<div style = "min-height : 400px;" class="row">
-							<div class="large-6 columns">
-								<ul id = "fileList" class="side-nav">
+						<div style = "min-height : 480px;" class="row">
+							<div class="large-6 columns" style = "width:370px; overflow:hidden">
+								<ul id = "fileList" class="side-nav" style = "height:480px; width:385px; overflow:scroll">
 									<!-- This area populates the list of discovered files in the current directory -->
 								</ul>
 							</div>
@@ -43,11 +40,12 @@
 			</div>
 
 			<aside class="large-3 columns">
-				<h5>Directories</h5>
-				<ul id = "directoryList" class="side-nav">
-					<!-- This area populates the list of discovered directories in the current directory -->
-				</ul>
-				
+				<h5 id = "dirHeader"></h5>
+				<div style = "width:220px; overflow:hidden">
+					<ul id = "directoryList" class="side-nav" style = "height:300px; width:235px; overflow:scroll;">
+						<!-- This area populates the list of discovered directories in the current directory -->
+					</ul>
+				</div>
 				<div id = "fileInfoPanel">
 					<!-- This area populates the information for the individual file -->
 				</div>
@@ -66,6 +64,6 @@
 			</div>
 		</footer>
     
-		<script>setCurr(1, 'Downloads');</script>
+		<script>checkSession();</script>
 	</body>
 </html>
