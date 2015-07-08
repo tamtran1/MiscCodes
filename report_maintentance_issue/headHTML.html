@@ -1,0 +1,169 @@
+<!--Tam Tran-->
+<!--Instructor: Mr. Lupoli-->
+<!--Class: CMSC 331-->
+<!--11/21/2014-->
+<!--Project 1-->
+<!--description: This is the head.html, this is a standardize page with cascading style sheet, layout, and scripts-->
+<!--predefined for all pages in this directory-->
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Report A Maintenance Issue</title>
+
+		<style>
+			body
+			{	
+    				background-color: linen;
+				font-family: Arial, Verdana;
+			}
+			div
+			{	
+				margin-top: 40px;
+				margin-left: auto;
+     				margin-right: auto;
+				padding: 10px 30px; 
+				background: #D1D1D1;
+				width: 585px;
+				border-radius: 30px;
+				font-family: Arial, Verdana;
+			}
+			#submitButton
+			{	
+				background-color: #929292;
+				color: white;
+				border-radius: 9px;
+				height: 30px;
+				width: 140px; 
+				border: none; //0px #a1a1a1 solid;
+				outline: none;
+				float: right;
+				font-family: Arial, Verdana;
+			}
+			#submitButton:hover
+			{	
+				background-color: #A8A8A8;
+				color: white;
+			}
+			select
+			{	
+				background-color: #EDEDED;
+				border: 0px #a1a1a1 solid;
+				border-radius: 4px;
+				padding: 1px;
+				-webkit-appearance:none;
+				-moz-appearance: none;
+				appearance: none;
+				font-family: Arial, Verdana;
+
+			}
+			select::-ms-expand
+			{	
+				display: none;
+			}
+			.input
+			{	
+				background-color: #EDEDED;
+				border: 0px #a1a1a1 solid;
+				border-radius: 5px;
+				padding: 2px;
+			}
+			textarea
+			{	
+				background-color: #EDEDED;
+				border: 0px #a1a1a1 solid;
+				border-radius: 5px;
+				padding: 2px;
+				overflow: hidden;
+				font-family: rial, Verdana;
+			}
+		</style>
+		
+		<!--this is the asynchronous javascript and xml block, this block makes it possible for local content to communicate-->
+		<!--back with the server to retrieve the next database content to populate the dropdown box, this single function-->
+		<!--is used by all the dropdown box to populate the successor relative to the predecessor-->
+		<script>
+			//this function sends makes a request to the server to update a dropdown box
+			function populateList (category, id, id2, id3)
+			{				
+				if (window.XMLHttpRequest)
+					xmlhttp = new XMLHttpRequest();
+				else
+					xmlhttp = new ActiveXObject ("Microsoft.XMLHTTP");
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+					{
+						document.getElementById(id).innerHTML = xmlhttp.responseText;
+						if (id2 == 'problem')
+							document.getElementById(id2).innerHTML = "<option value = \"\">Select specific problem</option>";
+						if (id2 == 'detail')
+							document.getElementById(id2).innerHTML = "<option value = \"\">Select specific detail</option>";
+						document.getElementById(id3).innerHTML = "<option value = \"\">Select specific detail</option>";
+					}
+				}
+				xmlhttp.open ("post", "fetchTable.php", "true");
+				xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				xmlhttp.send ("category=" + category + "&type=" + id);
+			}
+			//this function performs a check to verify if all required fields are entered and selected accordingly before submitting
+			function confirm ()
+			{
+				if (document.getElementById ('name').value != '')
+					if (document.getElementById ('phone').value != '')
+						if ((document.getElementById ('phone').value).length == 10)
+							if (document.getElementById ('location').value != 'Select related issue')
+								if (document.getElementById ('issue').value != 'Select specific problem')
+									if (document.getElementById ('problem').value != '')
+										if (document.getElementById ('detail').value != '' || (document.getElementById ('issue').value != 'CSE001' && document.getElementById ('issue').value != 'CSE01'))
+											document.form.submit();
+										else
+											alert ('You need to select a specific detail about the issue');
+									else
+										alert ('You need to select a specific problem');
+								else
+									alert ('You need to select a related issue');
+							else
+								alert ('You need to select the location of the issue');
+						else
+							alert ('seems like your phone number is missing a few digits');
+					else
+						alert ('You need to enter your phone number'); 
+				else
+					alert ('You need to enter your name');				
+			}
+		</script>
+		
+		<!--this java script function verifies the phone number entered are only digits, if the user enters a non digits character it will be remove-->
+		<script type='text/javascript'> 
+			function isValidChar (char)
+			{
+			        var txt = char;
+				var found = false;
+				var validChars = "0123456789"; //List of valid characters
+
+				for(j = 0; j < txt.length; j++) //Will look through the value of text
+				{
+					var c = txt.charAt (j);
+					found = false;
+					for (x = 0; x < validChars.length; x++)
+					{
+						if (c == validChars.charAt (x))
+						{
+							found = true;
+							break;
+						}
+					}
+					if (!found)
+					{
+						document.getElementById('phone').value = char.substring(0, char.length -1);
+						break;
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+		<font size = "4">
