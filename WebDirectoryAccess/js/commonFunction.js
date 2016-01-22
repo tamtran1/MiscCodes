@@ -2,7 +2,7 @@
 var crumbRecord = 
 {
 	"level" : 0,
-	"dirString" : ""
+	"dirString" : "."
 };
 
 var fileInfoHTML =
@@ -51,82 +51,73 @@ var logInHTML =
 var navBarHTML = 
 	"<ul class = \"button-group\">" +
 		"<li>" +
-			"<a href = \"report_maintentance_issue/index.html\" class = \"button\">" +
-				"CMSC331 Work" +
-			"</a>" +
+			"<a href = \"report_maintentance_issue/index.html\" class = \"button\">CMSC331 Work</a>" +
 		"</li>" +
 		"<li>" +
-			"<a href = \"planes_for_hire/Main.php\" class = \"button\">" +
-				"CMSC447 Work" +
-			"</a>" +
+			"<a href = \"planes_for_hire/Main.php\" class = \"button\">CMSC447 Work</a>" +
 		"</li>" +
 		"<li>" +
-			"<a href = \"javascript: logOut();\" class = \"button\">" +
-				"Log Out" +
-			"</a>" +
+			"<a href = \"javascript: logOut();\" class = \"button\">Log Out</a>" +
 		"</li>" +
 	"</ul>";
-	
-var logInFailedHTML =
-	"<div id = \"logInFailed\" style = \"width:350px\">" +
-		"<label style = \"color : red\">" +
-			"Log In Failed" +
-		"</label>" +
-		"<a style = \"float:right\" href = \"javascript: login()\" class = \"button [tiny small large]\">Try Again</a>" +
-	"</div>";
 
 /*===============================> common functions <===============================*/
-function logOut()
+function ajax (data, dstScript, callBack)
 {
-	if (window.XMLHttpRequest)
-			xmlhttp = new XMLHttpRequest();
-		else
-			xmlhttp = new ActiveXObject ("Microsoft.XMLHTTP");
+	//alert ("data = " + data + ", dstScript = " + dstScript + ", callBack = " + callBack);
 	
-		xmlhttp.onreadystatechange = function()
+	if (window.XMLHttpRequest)
+		xmlhttp = new XMLHttpRequest();
+	else
+		xmlhttp = new ActiveXObject ("Microsoft.XMLHTTP");
+	
+	xmlhttp.onreadystatechange = function()
+	{
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		{
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-			{
-				document.getElementById('navBar').innerHTML = "";
-				document.getElementById('dirHeader').innerHTML = "";
-				document.getElementById('fileInfoPanel').innerHTML = "";
-				document.getElementById('directoryList').innerHTML = "";
-				document.getElementById('preview').innerHTML = "";
-				document.getElementById('breadCrumb').innerHTML = "";
-				login();
-			}
+			if (xmlhttp.responseText)
+				callBack (xmlhttp.responseText, 'ajax');
+			else
+				callBack (xmlhttp.responseText, 'ajax');
 		}
-		xmlhttp.open ("post", "login.php", "true");
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xmlhttp.send ("logOut=true");
+	}
+	
+	xmlhttp.open ("post", dstScript, "true");
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xmlhttp.send (data);
 }
 
-function checkSession(logOut)
+function logOut(arg1, arg2)
 {
-	var data = "checkSession=true";
-		
-	if (window.XMLHttpRequest)
-			xmlhttp = new XMLHttpRequest();
-		else
-			xmlhttp = new ActiveXObject ("Microsoft.XMLHTTP");
-	
-		xmlhttp.onreadystatechange = function()
-		{
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-			{
-				if (xmlhttp.responseText)
-					setCurr(1, 'stuff');
-				else
-					login();
-			}
-		}
-		xmlhttp.open ("post", "login.php", "true");
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xmlhttp.send (data);
+	if (!arg1 && !arg2)
+		ajax ("logOut=true", "login.php", logOut);
+	else if (!arg1 && arg2)
+		ajax ("logOut=true", "login.php", logOut);
+	else if (arg1 && arg2){
+		document.getElementById('navBar').innerHTML = "";
+		document.getElementById('dirHeader').innerHTML = "";
+		document.getElementById('fileInfoPanel').innerHTML = "";
+		document.getElementById('directoryList').innerHTML = "";
+		document.getElementById('preview').innerHTML = "";
+		document.getElementById('breadCrumb').innerHTML = "";
+		login();
+	}
 }
 
-function login()
-{
+function checkSession(arg1, arg2)
+{	
+	if (!arg1 && !arg2) {//first call both argument is null, invoke ajax
+		ajax ("checkSession=true", "login.php", checkSession);
+	} else if (!arg1 && arg2) { //call back will results in second argument being true, but if arg1 is null then login require
+		login();
+	} else if (arg1 && arg2) { //if call back result in both being true then session has started 
+		setCurr(1, 'WebDirectoryAccess');
+		setCurr(2, 'stuff');
+	}
+}
+
+function login(arg1, arg2)
+{	
 	document.getElementById('navBar').innerHTML = "";
 	document.getElementById('dirHeader').innerHTML = "";
 	document.getElementById('fileInfoPanel').innerHTML = "";
@@ -150,32 +141,25 @@ function login()
 		
 		var data = "login=true" + "&userName=" + userName + "&password=" + password;
 		
-		if (window.XMLHttpRequest)
-			xmlhttp = new XMLHttpRequest();
-		else
-			xmlhttp = new ActiveXObject ("Microsoft.XMLHTTP");
-	
-		xmlhttp.onreadystatechange = function()
-		{
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-			{
-				if (xmlhttp.responseText)
-					//document.getElementById('breadCrumb').innerHTML = xmlhttp.responseText;	//for debug, remove when done
-					setCurr(1, 'stuff');
-				else
-					document.getElementById('fileList').innerHTML = logInFailedHTML;
-			}
+		if (!arg1 && !arg2)
+			ajax (data, "login.php", login);
+		else if (!arg1 && arg2)
+			document.getElementById('err').innerHTML = "Log In Failed";
+		else if (arg1 && arg2) {
+			setCurr(1, 'WebDirectoryAccess');
+			setCurr(2, 'stuff');
 		}
-	
-		xmlhttp.open ("post", "login.php", "true");
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xmlhttp.send (data);
 		
 	} else
 		document.getElementById('fileList').innerHTML = logInHTML;
 }
 
-function preview(img, name, size, date, time, sizeInBytes) 
+function previewImg (arg1, arg2)
+{
+	document.getElementById('preview').innerHTML = arg1;
+}
+
+function preview(img, name, size, date, time, sizeInBytes, arg1, arg2) 
 {
 	if (name.length > 16)
 		name = name.substr (0, 8) + "..." + name.substr (name.length - 5, name.length);
@@ -185,24 +169,8 @@ function preview(img, name, size, date, time, sizeInBytes)
 	document.getElementById('fileTime').innerHTML = time;
 	document.getElementById('preview').innerHTML = "";
 	
-	if (sizeInBytes < 20971520 && name.substr(name.length - 3, name.length).toLowerCase() == "jpg") {
-		data = "dir=" + img;
-		
-		if (window.XMLHttpRequest)
-			xmlhttp = new XMLHttpRequest();
-		else
-			xmlhttp = new ActiveXObject ("Microsoft.XMLHTTP");
-		
-		xmlhttp.onreadystatechange = function()
-		{
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-					document.getElementById('preview').innerHTML = xmlhttp.responseText;
-		}
-	
-		xmlhttp.open ("post", "image.php", "true");
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xmlhttp.send (data);
-	}
+	if (sizeInBytes < 20971520 && name.substr(name.length - 3, name.length).toLowerCase() == "jpg")
+		ajax (data = "dir=" + img, "image.php", previewImg);
 }
 
 function setCurr (lvl, directory)
@@ -228,11 +196,13 @@ function listFiles(dirLvl)
 	crumbRecord.dirString = "";
 	var crumbHTML = "<div class = \"shiftRight\">" +
 						"<ul class=\"breadcrumb\">";
-	var tmpdirString = "";
 	
-	for (var i = 1; i <= dirLvl; i ++)
+	for (var i = 0; i <= dirLvl; i ++)
 	{
-		crumbRecord.dirString += ("/" + dirArr[i]);
+		if (dirArr[i] == ".")
+			crumbRecord.dirString += dirArr[i];
+		else
+			crumbRecord.dirString += ("/" + dirArr[i]);
 		truncDirName = dirArr[i]; //truncate long directory name (> 10) into shorter name easier display
 		if (dirArr[i].length > 10) //if > 10 chars, take the first four and last three chars of string
 			truncDirName = dirArr[i].substr (0, 4) + "..." + dirArr[i].substr (dirArr[i].length - 3, dirArr[i].length);
@@ -249,92 +219,75 @@ function listFiles(dirLvl)
 			"</ul>" +
 		"</div>";
 	document.getElementById('breadCrumb').innerHTML = crumbHTML;
-	getFiles("directory=" + crumbRecord.dirString);
+	ajax (data = "directory=" + crumbRecord.dirString, "getFiles.php", getFiles);
 }
 
-function getFiles(data)
+function getFiles (arg)
 {
-	if (window.XMLHttpRequest)
-		xmlhttp = new XMLHttpRequest();
-	else
-		xmlhttp = new ActiveXObject ("Microsoft.XMLHTTP");
-	
-	xmlhttp.onreadystatechange = function()
-	{
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+	if (arg){
+		var dataObj = JSON.parse(arg);
+		var dirArr = dataObj.breadCrumb.split("|");
+		var dirList = "";
+		var fileList = "";
+		
+		if (dirArr[0])
 		{
-			if (xmlhttp.responseText)
-			{
-				var dataObj = JSON.parse(xmlhttp.responseText);
-				var dirArr = dataObj.breadCrumb.split("|");
-				var dirList = "";
-				var fileList = "";
+			for (var i in dirArr)
+				if (dirArr[i] !== "")
+					dirList =
+						dirList + 
+							"<li>" +
+								"<a class = \"shiftLeft\" href = \"javascript: setCurr(" + 
+									(crumbRecord.level + 1) + ", '" + 
+									dirArr[i] + "');\">" + 
+									dirArr[i] + 
+								"</a>" +
+							"</li>";
+		
+			document.getElementById('directoryList').innerHTML = dirList;	
+		} else
+			document.getElementById('directoryList').innerHTML = dirListErr;
+		
+		var fileDateArr = dataObj.fileDate.split("|");
+		var fileTimeArr = dataObj.fileTime.split("|");
+		var fileSizeArr = dataObj.fileSizeList.split("|");
+		var fileSizeBytesArr = dataObj.fileSizeListBytes.split("|");
+		var fileArr = dataObj.fileList.split("|");
+		
+		if (fileArr[0])
+		{
+			for(var i in fileArr)
+				if (fileArr[i] !== "")
+					fileList =
+						fileList + 
+							"<li>" +
+								"<a class = \"shiftRight\" href = \"" + 
+									crumbRecord.dirString + "/" + 
+									fileArr[i] + "\" onMouseOver=\"preview('" + 
+									crumbRecord.dirString + "/" + 
+									fileArr[i] + "', '" + 
+									fileArr[i] + "', '" + 
+									fileSizeArr[i] + "', '" + 
+									fileDateArr[i] + "', '" + 
+									fileTimeArr[i] + "', '" + 
+									fileSizeBytesArr[i] + "');\">" + 
+									fileArr[i] + 
+								"</a>" +
+							"</li>";
 			
-				if (dirArr[0])
-				{
-					for (var i in dirArr)
-						if (dirArr[i] !== "")
-							dirList =
-								dirList + 
-									"<li>" +
-										"<a class = \"shiftLeft\" href = \"javascript: setCurr(" + 
-											(crumbRecord.level + 1) + ", '" + 
-											dirArr[i] + "');\">" + 
-											dirArr[i] + 
-										"</a>" +
-									"</li>";
-				
-					document.getElementById('directoryList').innerHTML = dirList;	
-				} else
-					document.getElementById('directoryList').innerHTML = dirListErr;
-			
-				var fileDateArr = dataObj.fileDate.split("|");
-				var fileTimeArr = dataObj.fileTime.split("|");
-				var fileSizeArr = dataObj.fileSizeList.split("|");
-				var fileSizeBytesArr = dataObj.fileSizeListBytes.split("|");
-				var fileArr = dataObj.fileList.split("|");
-
-				if (fileArr[0])
-				{
-					for(var i in fileArr)
-						if (fileArr[i] !== "")
-							fileList =
-								fileList + 
-									"<li>" +
-										"<a class = \"shiftRight\" href = \"" + 
-											crumbRecord.dirString + "/" + 
-											fileArr[i] + "\" onMouseOver=\"preview('" + 
-											crumbRecord.dirString + "/" + 
-											fileArr[i] + "', '" + 
-											fileArr[i] + "', '" + 
-											fileSizeArr[i] + "', '" + 
-											fileDateArr[i] + "', '" + 
-											fileTimeArr[i] + "', '" + 
-											fileSizeBytesArr[i] + "');\">" + 
-											fileArr[i] + 
-										"</a>" +
-									"</li>";
-					
-					document.getElementById('fileList').innerHTML = fileList;
-				} else
-					document.getElementById('fileList').innerHTML = fileListErr;
-			
-				document.getElementById('fileInfoPanel').innerHTML = fileInfoHTML;				
-				document.getElementById('preview').innerHTML = "";
-			} else
-			{
-				document.getElementById('navBar').innerHTML = "";
-				document.getElementById('dirHeader').innerHTML = "";
-				document.getElementById('fileInfoPanel').innerHTML = "";
-				document.getElementById('directoryList').innerHTML = "";
-				document.getElementById('preview').innerHTML = "";
-				document.getElementById('breadCrumb').innerHTML = "";
-				document.getElementById('fileList').innerHTML = sessionErr;
-			}
-		}	
-	}
+			document.getElementById('fileList').innerHTML = fileList;
+		} else
+			document.getElementById('fileList').innerHTML = fileListErr;
 	
-	xmlhttp.open ("post", "getFiles.php", "true");
-	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xmlhttp.send (data);
+		document.getElementById('fileInfoPanel').innerHTML = fileInfoHTML;				
+		document.getElementById('preview').innerHTML = "";
+	} else {
+		document.getElementById('navBar').innerHTML = "";
+		document.getElementById('dirHeader').innerHTML = "";
+		document.getElementById('fileInfoPanel').innerHTML = "";
+		document.getElementById('directoryList').innerHTML = "";
+		document.getElementById('preview').innerHTML = "";
+		document.getElementById('breadCrumb').innerHTML = "";
+		document.getElementById('fileList').innerHTML = sessionErr;
+	}
 }

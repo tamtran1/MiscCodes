@@ -19,6 +19,7 @@
 	if (isset ($_POST['logOut']))
 	{
 		session_destroy();
+		print (true);
 		exit;
 	}
 	
