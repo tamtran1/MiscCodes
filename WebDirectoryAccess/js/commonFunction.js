@@ -51,13 +51,19 @@ var logInHTML =
 var navBarHTML = 
 	"<ul class = \"button-group\">" +
 		"<li>" +
-			"<a href = \"report_maintentance_issue/index.html\" class = \"button\">CMSC331 Work</a>" +
+			"<a href = \"report_maintentance_issue/index.html\" class = \"button\">" +
+				"CMSC331 Work" +
+			"</a>" +
 		"</li>" +
 		"<li>" +
-			"<a href = \"planes_for_hire/Main.php\" class = \"button\">CMSC447 Work</a>" +
+			"<a href = \"planes_for_hire/Main.php\" class = \"button\">" +
+				"CMSC447 Work" +
+			"</a>" +
 		"</li>" +
 		"<li>" +
-			"<a href = \"javascript: logOut();\" class = \"button\">Log Out</a>" +
+			"<a href = \"javascript: logOut();\" class = \"button\">" +
+				"Log Out" +
+			"</a>" +
 		"</li>" +
 	"</ul>";
 	
