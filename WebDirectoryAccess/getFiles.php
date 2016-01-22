@@ -8,12 +8,18 @@
 	$bytes;
 	$fileDate;
 	$fileTime;
+	$logData = "";
 	
 	if (isset ($_SESSION['login']))
 	{
 		$currDir = $_POST['directory'];
 		$dir = ".".$currDir;
 		$contentArr = scandir($dir);
+		
+		$logData = $logData.$_SESSION['login']." ".date('m/d/Y h:i:s')." ".$_SERVER['REMOTE_ADDR']." ".$currDir." \r\n";
+		$file = fopen("activity.log", "a") or die("Unable to open file!");
+		fwrite ($file, $logData);
+		fclose($file);
 	
 		foreach ($contentArr as $item)
 		{	
@@ -59,11 +65,11 @@
 				
 					if (isset ($fileDate) && isset ($fileTime))
 					{
-						$fileDate = $fileDate.date ("F d Y", filemtime($dir."/".$item))."|";
+						$fileDate = $fileDate.date ("m/d/Y", filemtime($dir."/".$item))."|";
 						$fileTime = $fileTime.date ("H:i:s", filemtime($dir."/".$item))."|";
 					} else
 					{
-						$fileDate = date ("F d Y", filemtime($dir."/".$item))."|";
+						$fileDate = date ("m/d/Y", filemtime($dir."/".$item))."|";
 						$fileTime = date ("H:i:s", filemtime($dir."/".$item))."|";
 					}
 				}
