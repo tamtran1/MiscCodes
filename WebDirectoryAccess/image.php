@@ -14,7 +14,10 @@
 	$ratio = $newWidth / $width; //determine the ratio of the new width to the original width
 	$newHeight = round ($ratio * $height); //multiply the ratio with the original height to get the new height
 	
-	if (file_exists ("./cacheImg/".$img)) {
+	if (explode ("/", $_POST['dir'])[1] == "cacheImg") {
+		//this situation occur is the user previews an image in the image cache directory, this avoids re-caching a cached image
+		print ("<div id = \"imageDiv\" style = \"background-image: url(..".$_POST['dir']."); height: ".$newHeight."px; width: ".$newWidth."px; \"><img src = \"./img/image.png\" height = \"550\" width = \"450\"/></div>");
+	} else if (file_exists ("./cacheImg/".$img)) {
 		/*
 		 * this next line puts the rendered image as a background in a div and put a larger empty transparent image on top as the loaded image,
 		 * this will prevent users from downloading the preview image. idea is to prevent preview image being saved by right clicking

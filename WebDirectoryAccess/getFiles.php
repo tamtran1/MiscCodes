@@ -4,7 +4,6 @@
 	$directoryList;
 	$fileList;
 	$fileSizeList;
-	$fileSizeListBytes;
 	$bytes;
 	$fileDate;
 	$fileTime;
@@ -52,26 +51,10 @@
 						$bytes = $bytes . ' byte';
 					else
 						$bytes = '0 bytes';
-				
-					if (isset ($fileSizeList) && isset ($fileSizeListBytes))
-					{
-						$fileSizeList = $fileSizeList.$bytes."|";
-						$fileSizeListBytes = $fileSizeListBytes.filesize ($dir."/".$item)."|";
-					} else
-					{
-						$fileSizeList = $bytes."|";
-						$fileSizeListBytes = filesize ($dir."/".$item)."|";
-					}
-				
-					if (isset ($fileDate) && isset ($fileTime))
-					{
-						$fileDate = $fileDate.date ("m/d/Y", filemtime($dir."/".$item))."|";
-						$fileTime = $fileTime.date ("H:i:s", filemtime($dir."/".$item))."|";
-					} else
-					{
-						$fileDate = date ("m/d/Y", filemtime($dir."/".$item))."|";
-						$fileTime = date ("H:i:s", filemtime($dir."/".$item))."|";
-					}
+					
+					$fileSizeList = isset ($fileSizeList) ? $fileSizeList.$bytes."|" : $bytes."|";
+					$fileDate = isset ($fileDate) ? $fileDate.date ("m/d/Y", filemtime($dir."/".$item))."|" : date ("m/d/Y", filemtime($dir."/".$item))."|";
+					$fileTime = isset ($fileTime) ? $fileTime.date ("H:i:s", filemtime($dir."/".$item))."|" : date ("H:i:s", filemtime($dir."/".$item))."|";
 				}
 			}
 		}
@@ -83,13 +66,12 @@
 		{
 			$fileList = "";
 			$fileSizeList = "";
-			$fileSizeListBytes = "";
 			$bytes = "";
 			$fileDate = "";
 			$fileTime = "";
 		}	
 		
-		$dataArr = array("fileList" => $fileList, "fileSizeList" => $fileSizeList, "fileSizeListBytes" => $fileSizeListBytes, "fileDate" => $fileDate, "fileTime" => $fileTime, "breadCrumb" => $directoryList);
+		$dataArr = array("fileList" => $fileList, "fileSizeList" => $fileSizeList, "fileDate" => $fileDate, "fileTime" => $fileTime, "breadCrumb" => $directoryList);
 		print (json_encode($dataArr));
 	} else
 		print (NULL);

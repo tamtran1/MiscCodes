@@ -28,7 +28,7 @@
 		if (isset ($_SESSION['login']))
 			print ($_SESSION['login']);
 		else
-			print (NULL);
+			print (null);
 		
 		exit;
 	}

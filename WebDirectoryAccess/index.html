@@ -4,6 +4,7 @@
 		<title>Home NAS</title>
 		<link rel="stylesheet" href="css/foundation.css" />
 		<link rel="stylesheet" href="css/miscStyle.css" />
+		<script src = "js/jquery-1.12.0.min.js"></script>
 		<script src = "js/commonFunction.js"></script>
 		
 	</head>
@@ -23,16 +24,14 @@
 	        	
 					<article>
 						<div id = "breadCrumb">					
-							<!-- This is where the directory bread crumbs get populated -->
+							<!-- bread crumbs populates here -->
 						</div>
 						<div style = "min-height : 480px;" class="row">
-							<div class="large-6 columns" style = "width:370px; height:480px; overflow:hidden;">
-								<ul id = "fileList" class="side-nav" style = "height:497px; width:385px; overflow:scroll">
-									<!-- This area populates the list of discovered files in the current directory -->
-								</ul>
+							<div id = "fileListPanel" class="large-6 columns" style = "width:370px; height:480px; overflow:hidden;">
+								<!-- discovered files populates here -->
 							</div>
 							<div id = "preview" class="large-6 columns">
-								<!-- preview image goes here -->
+								<!-- image preview populates here -->
 							</div>
 						</div>
 					</article>
@@ -42,12 +41,10 @@
 			<aside class="large-3 columns">
 				<h5 id = "dirHeader"></h5>
 				<div id = "directoryListPanel" style = "width:220px; height:283px; overflow:hidden">
-					<ul id = "directoryList" class="side-nav" style = "height:300px; width:237px; overflow:scroll;">
-						<!-- This area populates the list of discovered directories in the current directory -->
-					</ul>
+					<!-- discovered directories populates here -->
 				</div>
 				<div id = "fileInfoPanel">
-					<!-- This area populates the information for the individual file -->
+					<!-- file statistics populates here -->
 				</div>
 			</aside>
 
