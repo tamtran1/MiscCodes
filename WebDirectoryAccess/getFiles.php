@@ -9,9 +9,17 @@
 	$fileTime;
 	$logData = "";
 	
-	if (isset ($_SESSION['login']))
-	{
-		$currDir = $_POST['directory'];
+	if (isset ($_SESSION['login'])) {
+		if ($_SESSION['login'] != 'tam' && $_POST['directory'] == '/') {
+			$_POST['directory'] = '/stuff';
+			$_POST['lvl'] = 1;
+			exit;
+		}
+		
+		//remove left most '/' from the string if it's not root directory, but keep if this string contains only a '/' 
+		$_SESSION['dir'] = strlen($_POST['directory']) > 1 ? substr ($_POST['directory'], 1) : $_POST['directory'];
+		$_SESSION['lvl'] = $_POST['lvl'];
+		$currDir = "/".$_SESSION['dir'];
 		$dir = ".".$currDir;
 		$contentArr = scandir($dir);
 		
