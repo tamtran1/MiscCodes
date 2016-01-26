@@ -125,14 +125,23 @@ function initMainPanels () {
 	
 }
 
+/*
+ * generate a random list of feature image from the given large list images
+ * and use it for the orbit image preview
+ */
 function initFeatureImg (arg) {	
-	var imgLst = arg;
-	for (var i in imgLst)
-		if (i < 6)
-			featureImgHTML += "<img src = \"cacheImg/" + imgLst[i] + "\">";
-		else 
-			break;
-	featureImgHTML += "</div>";
+	if (arg) { //if empty list, do generate anything
+		var lst = []; //the array to hold the random images
+		
+		for (var i = 0; i < 5; i++) { //loop for 5 times to select five different images
+			var indx = Math.floor ((Math.random() * arg.length) - 1); //get random value up to size of large list
+			lst.push (arg.splice (indx, 1)); //remove the image from large list and put in small list
+		} //the image is remove from the large list so we don't select it twice
+		
+		for (var i in lst)
+			featureImgHTML += "<img src = \"cacheImg/" + lst[i] + "\">";
+		featureImgHTML += "</div>";
+	}
 }
 
 /*
