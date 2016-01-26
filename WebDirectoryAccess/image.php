@@ -10,7 +10,7 @@
 	
 	//since we're interested in fixed sized width, so width has to be 400px wide
 	list($width, $height) = getimagesize(".".$_POST['dir']); //determine the size of image
-	$newWidth = 350; //set the new width to 400px
+	$newWidth = 800; //set the new width to 400px
 	$ratio = $newWidth / $width; //determine the ratio of the new width to the original width
 	$newHeight = round ($ratio * $height); //multiply the ratio with the original height to get the new height
 	
@@ -23,7 +23,8 @@
 		 * this will prevent users from downloading the preview image. idea is to prevent preview image being saved by right clicking
 		 * then return the entire html string back to ajax call
 		*/
-		print ("<div id = \"imageDiv\" style = \"background-image: url(../cacheImg/".$img."); height: ".$newHeight."px; width: ".$newWidth."px; \"><img src = \"./cacheImg/image.png\" height = \"550\" width = \"450\"/></div>");
+		//print ("<div id = \"imageDiv\" style = \"background-image: url(../cacheImg/".$img."); height: ".$newHeight."px; width: ".$newWidth."px; \"><img src = \"./cacheImg/image.png\" height = \"550\" width = \"450\"/></div>");
+		print ("<img src = \"./cacheImg/".$img."\">");
 	} else {	
 		//resamples the new image
 		$image_p = imagecreatetruecolor($newWidth, $newHeight);

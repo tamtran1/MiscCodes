@@ -8,71 +8,35 @@ var crumbRecord = { //the bread crumb record data object
 
 var fStatArr = []; //this array holds statistics objects for each file, it is used in the getFiles function
 
-var logInHTML = "<div id = \"log-in-panel\" class = \"small-6 small-centered large-4 columns\">" +
-					"<p></p>" +
-					"<div class = \"row column log-in-form\">" +
-						"<label>User ID" +
-							"<input id = \"userName\" type = \"text\" onkeydown = \"if (event.keyCode == 13) {login();}\">" +
-						"</label>" +
-						"<label>Password" +
-							"<input id = \"password\" type = \"password\" onkeydown = \"if (event.keyCode == 13) login();\">" +
-						"</label>" +
-						"<p><a style = \"float:right\" href = \"javascript: login();\" class = \"button expanded\">Log In</a></p>" +
-						"<err id = \"err\" style = \"color: red\"></err>" +
-					"</div>" +
-				"</div>";
+var fileInfoHTML = "<div class = \"shiftUp\"><div class=\"panel\"><h5>File Info</h5>" +
+	"Name: <name id = \"fileName\"></name><br>" +
+	"Size: <size id = \"fileSize\"></size><br>" +
+	"Date: <date id = \"fileDate\"></date><br>" +
+	"Time: <time id = \"fileTime\"></time><br>" +
+	"</div></div>";
 
-var TopMenuBarIconHTML = "<div id = \"toggle-topbar-menu-icon\">" +
-							"<li class = \"toggle-topbar menu-icon\">" +
-								"<a><span>menu</span></a>" +
-							"</li>" +
-						"</div>";
-						
-var TopBarSectionHTML = "<section id = \"top-bar-section\" class = \"top-bar-section\">" +
-							"<ul class = \"right\">" +
-								"<li class = \"divider\"></li>" +
-								"<li class = \"has-dropdown\">" +
-									"<a id = \"id\"></a>" +
-									"<ul class = \"dropdown\">" +
-										"<li class = \"has-dropdown\">" +
-											"<a>Others</a>" +
-											"<ul class = \"dropdown\">" +
-												"<li><a href = \"#\">Some Game Project</a></li>" +
-											"</ul>" +
-										"</li>" +
-										"<li><a href = \"javascript: logOut();\">Log Out</a></li>" +
-									"</ul>" +
-								"</li>" +
-							"</ul>";
-						"</section>";
-
-var BreadCrumbPanelHTML = "<nav class = \"breadcrumbs\"></nav>";
-
-var MainContentPanelHTML = "<div style = \"height : 480px; overflow : auto;\" id = \"directory-panel\" class = \"large-4 small-6 columns\"></div>" + //populated from getFile function
-						
-							"<div style = \"min-height : 480px;\" id = \"center-panel\" class = \"large-4 small-6 columns\">" +
-								"<div id = \"image-panel\"></div><br>" +
-								
-								"<div id = \"file-info-panel\"></div>" + //populated from fileStat function
-							"</div>" +
-							
-							"<div style = \"height : 480px; overflow : auto;\" id = \"file-panel\" class = \"large-4 small-12 columns\"></div>"; //populated from getFile function
-
-var sessionErr = "<div style = \"width : 300px\" class = \"small-6 small-centered large-4 columns\"><br><err style =\"color: red\">" +
-	"Oops! Can's access this directory.<br>Try to refresh the page or login again.<br><br>" +
-	"<a href = \"javascript: login();\" class = \"button [tiny small large]\">Log In Again</a>" +
+var sessionErr = "<div style = \"width:350px\"><err style =\"color: red\">" +
+	"Oops! There seems to be an error<br>Did you try to access the root directory as guest?<br>Try to refresh the page or login again.<br>" +
+	"<a style = \"float:right\"href = \"javascript: login();\" class = \"button [tiny small large]\">Log In</a>" +
 	"</err></div>";
 
-var fileListErr = "<h4>Files</h4><hr><div class = \"row\"><h5><err>No Files Found</err></h5></div>";
-var dirListErr = "<h4>Directory</h4><hr><div class = \"row\"><h5><err>No Sub Directory Found</err></h5></div>";
-var featureImgHTML = "<div data-orbit>"; //this variable will hold the html string for the feature image
-							
-/*
+var logInHTML = "<div id = \"logIn\" style = \"width: 350px;\">" +
+	"<label>User Name" +
+	"<input id = \"userName\" type = \"text\" onkeydown = \"if (event.keyCode == 13) {login();}\"/></label>" +
+	"<label>Password" +
+	"<input id = \"password\" type = \"password\" onkeydown = \"if (event.keyCode == 13) login();\"/></label>" +
+	"<a style = \"float:right\"href = \"javascript: login();\" class = \"button [tiny small large]\">Log In</a>" +
+	"<err id = \"err\" style = \"color: red\"></err></div>";
+	
+var navBarHTML = "<ul class = \"button-group\">" +
+	"<li><a href = \"report_maintentance_issue/index.html\" class = \"button\">CMSC331 Work</a></li>" +
+	"<li><a href = \"planes_for_hire/Main.php\" class = \"button\">CMSC447 Work</a></li>" +
+	"<li><a href = \"javascript: logOut();\" class = \"button\">Log Out</a></li></ul>";
 
 var directoryListHTML = "<ul id = \"directoryList\" class = \"side-nav\" style = \"height:300px; width:237px; overflow:scroll;\"></ul>";
 var fileListHTML = "<ul id = \"fileList\" class = \"side-nav\" style = \"height:497px; width:385px; overflow:scroll\"></ul>";
-
-*/
+var fileListErr = "<err class = \"shiftRight\">No Files Found</err>";
+var dirListErr = "<err class = \"shiftLeft\">No Sub Directory Found</err>";
 
 /*
  * this is the common ajax function, all server requests are invoke through this function
@@ -93,46 +57,24 @@ function ajax (data, dstScript, callback) {
  * function to clears all the panels, normally used for changing directory or logout
  */
 function clrPanels () {
-	$('#top-menu-bar-icon-panel').html ('');
-	$('#top-bar-section').html ('');
-	$('#bread-crumb-panel').html ('');
-	$('#main-content-panel').html ('');
-}
-
-/*
- * this function is only called to initialize the top section panel and the breadcrumb
- * then there is log in or refresh is perform
- */
-function initTopPanels (id) {
-	$('#top-menu-bar-icon-panel').html (TopMenuBarIconHTML);
-	$('#top-bar-section-panel').html (TopBarSectionHTML);
-	$('#id').html ("Hello " + id);
-	$('#bread-crumb-panel').html (BreadCrumbPanelHTML);
+	$('#navBar').html('');
+	$('#breadCrumb').html('');
+	$('#dirHeader').html('');
+	$('#fileInfoPanel').html('');
+	$('#directoryListPanel').html('');
+	$('#preview').html('');
 }
 
 /*
  * function to initialize the empty panels
  */
-function initMainPanels () {
-	$('#main-content-panel').html (MainContentPanelHTML);
-	$('#image-panel').html (featureImgHTML);
-	/*
-	 * important, below statement is necessary for webapp functionality, 
-	 * must be last statement to execute after everything else is in place.
-	 * do not delete !!!
-	 */
-	$(document).foundation();
-	
-}
-
-function initFeatureImg (arg) {	
-	var imgLst = arg;
-	for (var i in imgLst)
-		if (i < 6)
-			featureImgHTML += "<img src = \"cacheImg/" + imgLst[i] + "\">";
-		else 
-			break;
-	featureImgHTML += "</div>";
+function initPanels () {
+	$('#navBar').html (navBarHTML);
+	$('#dirHeader').html ('Directories');
+	$('#directoryListPanel').html(directoryListHTML);
+	$('#fileInfoPanel').html(fileInfoHTML);
+	$('#fileListPanel').html (fileListHTML);
+	$('#preview').html('');
 }
 
 /*
@@ -153,22 +95,18 @@ function logOut(arg1, arg2) {
  *the preview image function, will only gets invoke if its an image and is a jpg file
  */
 function previewImg (arg) {
-	$('#image-panel').html (arg); //shows the preview image
+	$('#preview').html (arg); //shows the preview image
 }
 
 /*
  * the file statistic function shows the statistics of the file when the user hovers mouse over the file name
  */
 function fileStat (idx) {
-	var fileInfoHTML = "<h6 class = \"subheader\">" +
-		(fStatArr[idx].name.length > 30 ? fStatArr[idx].name.substr (0, 22) + "..." + fStatArr[idx].name.substr (-5) : fStatArr[idx].name) + "<br>" +
-		fStatArr[idx].size + "<br>" +
-		fStatArr[idx].date + "<br>" +
-		fStatArr[idx].time + "<br>" +
-		"</h6>";
-	
-	$('#file-info-panel').addClass ("panel");
-	$('#file-info-panel').html (fileInfoHTML);
+	$('#fileName').html (fStatArr[idx].name.length > 16 ? fStatArr[idx].name.substr (0, 8) + "..." + fStatArr[idx].name.substr (-5) : fStatArr[idx].name);
+	$('#fileSize').html (fStatArr[idx].size);
+	$('#fileDate').html (fStatArr[idx].date);
+	$('#fileTime').html (fStatArr[idx].time);
+	$('#preview').html ('');
 	
 	if (fStatArr[idx].name.split ('.').pop().toLowerCase() == "jpg") //if this file is a jpg, show its preview
 		ajax (data = "dir=" + fStatArr[idx].loc, "image.php", previewImg); //invoke ajax to resize image for faster rendering
@@ -183,8 +121,6 @@ function fileStat (idx) {
 function checkSession (arg1, arg2) {
 	if (arg1 && arg2) {//if call back result in both arg being true then session has started 
 		var dataObj = JSON.parse (arg1);
-		initFeatureImg (dataObj.imgLst);
-		initTopPanels (dataObj.id); //if session is still active, initialize the top panels again
 		chDir(dataObj.lvl, dataObj.dir); //go to designated directory
 	} else if (!arg1 && arg2) { //call back will results in second argument being true, but if arg1 is null then login require
 		login();
@@ -198,7 +134,7 @@ function checkSession (arg1, arg2) {
  * a started session
  */
 function login(arg1, arg2) {
-	if ($('#log-in-panel').length) { //first check if div logIn element exist, if not create one
+	if ($('#logIn').length) { //first check if div logIn element exist, if not create one
 		$('err').html(''); //empty out the error message tag 
 		
 		if (!$('#userName').val () || !$('#password').val ()) { //check if both input fields has a value 
@@ -208,15 +144,14 @@ function login(arg1, arg2) {
 		
 		if (arg1 && arg2) { //if both argument are satisfied
 			var dataObj = JSON.parse (arg1);
-			initFeatureImg (dataObj.imgLst);			
-			initTopPanels (dataObj.id); //log in succeed, initialize the top panels 
+			
 			chDir(dataObj.lvl, dataObj.dir); //go to designated directory
 		} else if (!arg1 && arg2) //arg1 is the server response, if this is false, logIn failed raise error message
 			$('#err').html ("Log in failed");
 		else //if both argument are undefined, invoke ajax to check the username and password
 			ajax ("login=true" + "&userName=" + $('#userName').val () + "&password=" + $('#password').val (), "login.php", login);
 	} else
-		$('#main-content-panel').html (logInHTML); //populate the fileInfoPanel with the logIn form
+		$('#fileListPanel').html (logInHTML); //populate the fileInfoPanel with the logIn form
 }
 
 /*
@@ -225,11 +160,10 @@ function login(arg1, arg2) {
  * Note: a browser refresh will zero the crumbRecord.lvl, no need case for lvl == crumbRecord.lvl
  */
 function chDir (lvl, dir) {
-	initMainPanels(); //initialize panels for new contents
+	initPanels(); //initialize panels for new contents
 	
 	if (lvl > crumbRecord.lvl) { //if lvl is greater than the crumbRecord level, then going deeper into sub-folder
 		crumbRecord.lvl += lvl - crumbRecord.lvl; //increment a level based on this offset
-		
 		crumbRecord.dir += (crumbRecord.dir.length > 1) ? ("/" + dir) : dir; //append the selected directory to the string
 		constrBrdCrmb (crumbRecord.lvl); //update the breadcrumb of the new selected folder
 	} else {
@@ -247,18 +181,17 @@ function constrBrdCrmb (lvl) {
 	crumbRecord.dir = "/"; //need to reset directory string, since going up a directory would shortens the string
 	
 	//begin constructing the bread crumb HTML, NOTE! first crumb is hard coded, since the '/' was removed after the split
-	var breadCrumbHTML = "<nav class = \"breadcrumbs\"><a href = \"javascript: chDir (0, '/');\">/</a>";
+	var crumbHTML = "<div class = \"shiftRight\"><ul class=\"breadcrumb\"><li><a href=\"javascript: chDir (0, '/');\">./</a></li>";
 	for (var i = 1; i <= lvl; i ++) {
 		crumbRecord.dir += (crumbRecord.dir.length > 1) ? ("/" + dirArr[i]) : dirArr[i]; //new directory string reconstruction based on selected bread crumb
-			if (i == lvl) //if this is the current directory element, make it non-clickable 
-				breadCrumbHTML += "<a class = \"current\">" + dirArr[i] + "</a>";
-			else //truncate any long directory name for easier display, if > 10 chars just take the first four and last three chars of string
-				breadCrumbHTML += "<a href = \"javascript: chDir (" + i + ", '" + dirArr[i] + "');\">" + ((dirArr[i].length > 10) ? dirArr[i].substr (0, 4) + "..." + dirArr[i].substr (-3) : dirArr[i]) + "</a>";
+		crumbHTML += "<li><a href=\"javascript: chDir (" + i + ", '" + dirArr[i] + "');\">" +
+			//truncate any long directory name for easier display, if > 10 chars just take the first four and last three chars of string
+			((dirArr[i].length > 10) ? dirArr[i].substr (0, 4) + "..." + dirArr[i].substr (-3) : dirArr[i]) + "</a></li>";
 	}
-	breadCrumbHTML += "</nav>"; //attach the closing tags
+	crumbHTML += "</ul></div>"; //attach the closing tags
 	
-	$('#bread-crumb-panel').html (breadCrumbHTML); //update the new bread crumb HTML content
-	//crumbRecord.dir could be an empty string, the '.' indicating root, is appended at the server side
+	$('#breadCrumb').html (crumbHTML); //update the new bread crumb HTML content
+	//crumbRecord.dir could be an empty string, the '/' indicating root, is appended at the server side
 	ajax (data = "directory=" + crumbRecord.dir + "&lvl=" + lvl, "getFiles.php", getFiles);
 }
 
@@ -270,16 +203,16 @@ function getFiles (arg) {
 		var dataObj = JSON.parse(arg); //parsing the json object
 		var dirArr = dataObj.breadCrumb.split("|");
 		dirArr.pop(); //pop off the last empty element that was included after the split
-		var dirListHTML = "<h4>Directory</h4>";
-		var fileListHTML = "<h4>Files</h4>";
+		var dirListHTML = "";
+		var fileListHTML = "";
 		
 		if (dirArr[0]) {
 			for (var i in dirArr) //constructing the directory list HTML	
-				dirListHTML += "<div class = \"row\"><h5><a href = \"javascript: chDir (" + (crumbRecord.lvl + 1) + ", '" + dirArr[i] + "');\">" + dirArr[i] + "</a></h5></div>";
+				dirListHTML += "<li><a class = \"shiftLeft\" href = \"javascript: chDir (" + (crumbRecord.lvl + 1) + ", '" + dirArr[i] + "');\">" + dirArr[i] + "</a></li>";
 			
-			$('#directory-panel').html (dirListHTML); //update the directory list with the new HTML content
+			$('#directoryList').html (dirListHTML); //update the directory list with the new HTML content
 		} else
-			$('#directory-panel').html (dirListErr); //error could also means there are no sub-directory
+			$('#directoryList').html (dirListErr); //error could also means there are no sub-directory
 		
 		var fDateArr = dataObj.fileDate.split("|"); //parsing the JSON object data into their respective lists
 		var fTimeArr = dataObj.fileTime.split("|");
@@ -299,16 +232,16 @@ function getFiles (arg) {
 					time: fTimeArr[i], 
 					loc: crumbRecord.dir + (crumbRecord.dir != "/" ? "/" : "") + fileArr[i]});
 				
-				fileListHTML += "<div class = \"row\"><h5><a href = \"" + fStatArr[i].loc + "\"" + //parameter of location of file
+				fileListHTML += "<li><a class = \"shiftRight\" href = \"" + fStatArr[i].loc + "\"" + //parameter of location of file
 					"onMouseOver = \"fileStat (" + i + ");\">" + //on mouse over will show the statistics of the file at this idx
-					fStatArr[i].name + "</a></h5></div>"; //name of file as it would appear in browser, not a parameter of fileStat
+					fStatArr[i].name + "</a></li>"; //name of file as it would appear in browser, not a parameter of fileStat
 			}
 			
-			$('#file-panel').html (fileListHTML); //update the fileList with the new HTML content
+			$('#fileList').html (fileListHTML); //update the fileList with the new HTML content
 		} else
-			$('#file-panel').html (fileListErr); //this could means that the directory does not have any file
+			$('#fileList').html (fileListErr); //this could means that the directory does not have any file
 	} else { //this error situation happens when the user is logged in and then clears their cookies cache while the page is displayed in the browser, 
 		clrPanels (); //a refresh or change directory will raise a session error since their credential is missing
-		$('#main-content-panel').html (sessionErr); //raises the session error
+		$('#fileList').html (sessionErr); //raises the session error
 	}
 }

@@ -1,66 +1,76 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en">
 	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Home NAS</title>
-		<link rel="stylesheet" href="css/foundation.css" />
-		<link rel="stylesheet" href="css/miscStyle.css" />
-		<script src = "js/jquery-1.12.0.min.js"></script>
-		<script src = "js/commonFunction.js"></script>
-		
+		 
+		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/foundation.min.css">
+		<link rel='stylesheet' href='css/foundation-icons.css' type='text/css'>
+		<link rel='stylesheet' href='css/miscStyle.css' type='text/css'>
+		 
+		<script src="js/modernizr.min.js"></script>
+		<script src="js/commonFunction.js"></script>
 	</head>
+	
 	<body>
+		<!-- Navigation -->
+		<nav class="top-bar" data-topbar>
+			<!-- Title Area -->
+			<ul class="title-area">
+				<li class="name">
+					<h1><a href=".">Home NAS</a></h1>
+				</li>
+				
+				<div id="top-menu-bar-icon-panel">
+					<!-- Top Menu Bar Icon Populates Here -->
+				</div>
+			</ul>
+			
+			<div id="top-bar-section-panel">
+				<!-- Top Bar Section Populates Here -->
+			</div>
+			
+		</nav>
+		<!-- End Top Bar -->
+		
+		<div id="bread-crumb-panel">
+			<!-- Bread Crums Populates Here -->
+		</div>
 		
 		<div class="row">
 			<div class="large-12 columns">
-				<div id = "navBar" class="nav-bar right">
-				</div>
-				<h1>Home NAS</h1>
-				<hr/>
-			</div>
-		</div>
-     	
-     	<div class="row">
-	        <div class="large-9 columns" role="content">
-	        	
-					<article>
-						<div id = "breadCrumb">					
-							<!-- bread crumbs populates here -->
-						</div>
-						<div style = "min-height : 480px;" class="row">
-							<div id = "fileListPanel" class="large-6 columns" style = "width:370px; height:480px; overflow:hidden;">
-								<!-- discovered files populates here -->
-							</div>
-							<div id = "preview" class="large-6 columns">
-								<!-- image preview populates here -->
-							</div>
-						</div>
-					</article>
-				
-			</div>
-
-			<aside class="large-3 columns">
-				<h5 id = "dirHeader"></h5>
-				<div id = "directoryListPanel" style = "width:220px; height:283px; overflow:hidden">
-					<!-- discovered directories populates here -->
-				</div>
-				<div id = "fileInfoPanel">
-					<!-- file statistics populates here -->
-				</div>
-			</aside>
-
-		</div>
-
-		<footer class="row">
-			<div class="large-12 columns">
-				<hr/>
+					
 				<div class="row">
-					<div class="large-6 columns">
-						<p>Tam Tran. May 19 2015</p>
-					</div>
+					<div class="large-12 columns">
+						<div class="row">
+							<div style = "min-height : 480px;" id="main-content-panel">							
+								<!-- Main Content Populates Here -->
+
+							</div>
+						</div>
+					</div>						
 				</div>
+			
+				<!-- Footer -->
+				<footer class="row">
+					<div class="large-12 columns"><hr>
+						<div class="row">
+							<div class="large-6 columns">
+								<p>Tam Tran. January 24 2016.</p>
+							</div>
+						</div>
+					</div>
+				</footer>
+				<!-- End Footer -->
+			
 			</div>
-		</footer>
-    
+		</div>
+		
+		<script src = "js/jquery-1.12.0.min.js"></script>
+		<script src="js/foundation.min.js"></script>
 		<script>checkSession();</script>
 	</body>
 </html>

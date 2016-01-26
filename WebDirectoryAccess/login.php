@@ -24,7 +24,7 @@
 	
 	if (isset ($_POST['checkSession'])) {
 		if (isset ($_SESSION['login'])) { //check if session is set
-			$dataArr = array ("dir" => $_SESSION['dir'], "lvl" => $_SESSION['lvl']); //if true, get its previous directory state
+			$dataArr = array ("imgLst" => $_SESSION['imgLst'], "id" => $_SESSION['login'], "dir" => $_SESSION['dir'], "lvl" => $_SESSION['lvl']); //if true, get its previous directory state
 			print (json_encode ($dataArr)); //encode the directory state into json object and send it back to client
 		} else
 			print (null); //respond null if no session is set
@@ -40,8 +40,9 @@
 				$_SESSION['login'] = $_POST['userName']; //creates a session for this user, and keep track of their activity
 				$_SESSION['dir'] = 'stuff'; //subdirectory relative to the directory containing the main index.html file 
 				$_SESSION['lvl'] = 1; //1 directory deep, directory containing index.html is main directory, or lvl 0 
+				$_SESSION['imgLst'] = getImgLst ();
 				
-				$dataArr = array ("dir" => $_SESSION['dir'], "lvl" => $_SESSION['lvl']); //construct the list of data
+				$dataArr = array ("imgLst" => $_SESSION['imgLst'], "id" => $_SESSION['login'], "dir" => $_SESSION['dir'], "lvl" => $_SESSION['lvl']); //construct the list of data
 				print (json_encode ($dataArr)); //encode it into a json object and send it back to the client
 				fclose ($data);
 				exit;
@@ -52,4 +53,17 @@
 		fclose($data); //clode the file handler to free memory
 		print (NULL);
 	}
+	
+	function getImgLst () {
+		$imgLst = scandir("./cacheImg");
+		
+		if ($imgLst) {
+			array_shift ($imgLst); //shift out the two '.' and '..' items
+			array_shift ($imgLst);			
+			return $imgLst;
+		} else 
+			return null;
+		
+	}
+	
 ?>
