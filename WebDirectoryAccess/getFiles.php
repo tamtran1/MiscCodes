@@ -4,13 +4,10 @@
 	$directoryList;
 	$fileList;
 	$fileSizeList;
-	$bytes;
-	$fileDate;
-	$fileTime;
 	$logData = "";
 	
 	if (isset ($_SESSION['login'])) {
-		if ($_SESSION['login'] != 'tam' && $_POST['directory'] == '/') {
+		if ($_SESSION['login'] != 'tam' && $_POST['directory'] == '/') { //restrict access to root if not user tam
 			$_POST['directory'] = '/stuff';
 			$_POST['lvl'] = 1;
 			exit;
@@ -28,18 +25,14 @@
 		fwrite ($file, $logData);
 		fclose($file);
 	
-		foreach ($contentArr as $item)
-		{	
-			if ($item != "." && $item != "..")
-			{
-				if (is_dir($dir.DIRECTORY_SEPARATOR.$item))
-				{
+		foreach ($contentArr as $item) {	
+			if ($item != "." && $item != "..") {
+				if (is_dir($dir.DIRECTORY_SEPARATOR.$item)) {
 					if (isset ($directoryList))
 						$directoryList = $directoryList.$item."|";
 					else
 						$directoryList = $item."|";
-				} else
-				{
+				} else {
 					if (isset ($fileList))
 						$fileList = $fileList.$item."|";
 					else
@@ -61,8 +54,6 @@
 						$bytes = '0 bytes';
 					
 					$fileSizeList = isset ($fileSizeList) ? $fileSizeList.$bytes."|" : $bytes."|";
-					$fileDate = isset ($fileDate) ? $fileDate.date ("m/d/Y", filemtime($dir."/".$item))."|" : date ("m/d/Y", filemtime($dir."/".$item))."|";
-					$fileTime = isset ($fileTime) ? $fileTime.date ("H:i:s", filemtime($dir."/".$item))."|" : date ("H:i:s", filemtime($dir."/".$item))."|";
 				}
 			}
 		}
@@ -70,16 +61,12 @@
 		if (!isset($directoryList))
 			$directoryList = "";
 		
-		if (!isset($fileList))
-		{
+		if (!isset($fileList)) {
 			$fileList = "";
 			$fileSizeList = "";
-			$bytes = "";
-			$fileDate = "";
-			$fileTime = "";
 		}	
 		
-		$dataArr = array("fileList" => $fileList, "fileSizeList" => $fileSizeList, "fileDate" => $fileDate, "fileTime" => $fileTime, "breadCrumb" => $directoryList);
+		$dataArr = array("fileList" => $fileList, "fileSizeList" => $fileSizeList, "breadCrumb" => $directoryList);
 		print (json_encode($dataArr));
 	} else
 		print (NULL);
