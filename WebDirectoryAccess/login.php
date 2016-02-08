@@ -24,7 +24,7 @@
 	
 	if (isset ($_POST['checkSession'])) {
 		if (isset ($_SESSION['login'])) { //check if session is set
-			$dataArr = array ("imgLst" => $_SESSION['imgLst'], "id" => $_SESSION['login'], "dir" => $_SESSION['dir'], "lvl" => $_SESSION['lvl']); //if true, get its previous directory state
+			$dataArr = array ("id" => $_SESSION['login'], "dir" => $_SESSION['dir'], "lvl" => $_SESSION['lvl']); //if true, get its previous directory state
 			print (json_encode ($dataArr)); //encode the directory state into json object and send it back to client
 		} else
 			print (null); //respond null if no session is set

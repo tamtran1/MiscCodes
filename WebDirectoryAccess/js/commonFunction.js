@@ -37,7 +37,8 @@ var TopBarSectionHTML = "<section id = \"top-bar-section\" class = \"top-bar-sec
 										"<li class = \"has-dropdown\">" +
 											"<a>Others</a>" +
 											"<ul class = \"dropdown\">" +
-												"<li><a href = \"roll_a_ball/index.html\">test game</a></li>" +
+												"<li><a href = \"test/test.html\">test</a></li>" +
+												"<li><a href = \"roll_a_ball/index.html\">roll a ball</a></li>" +
 												"<li><a href = \"planes_for_hire/index.html\">cmsc447</a></li>" +
 												"<li><a href = \"report_maintentance_issue/index.html\">cmsc331</a></li>" +
 											"</ul>" +
@@ -55,6 +56,14 @@ var sessionErr = "<div style = \"width : 300px\" class = \"small-6 small-centere
 	"<a href = \"javascript: login();\" class = \"button [tiny small large]\">Log In Again</a>" +
 	"</err></div>";
 
+/*
+ * this is the first function that gets called when this script gets loaded, as a result this script should be placed
+ * at the end html document.
+ * furthermore, writing the function this way causes it to automatically invoke when the script is loaded.
+ * I'm not sure what its called
+ */
+(function () {checkSession ();} ());
+	
 /*
  * this is the common ajax function, all server requests are invoke through this function
  * takes three parameters, the date to send to the server, the script to which the data is to
