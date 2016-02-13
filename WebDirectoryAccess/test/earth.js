@@ -13,7 +13,7 @@ function init() {
 	
 	geometry = new THREE.SphereGeometry(250, 40, 40); //create the object shape
 	material = new THREE.MeshBasicMaterial({map : null, overdraw : true}); //create the material for the shape
-	mesh = new THREE.Mesh(geometry, material);
+	mesh = new THREE.Mesh(geometry, material); //create a mesh and mesh together the shape and associated material
 	
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000); //creates a perspective camera
 	camera.position.z = 500; //sets camera position

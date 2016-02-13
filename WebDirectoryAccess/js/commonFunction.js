@@ -31,6 +31,8 @@ var TopMenuBarIconHTML = "<div id = \"toggle-topbar-menu-icon\">" +
 var TopBarSectionHTML = "<section id = \"top-bar-section\" class = \"top-bar-section\">" +
 							"<ul class = \"right\">" +
 								"<li class = \"divider\"></li>" +
+								"<li><a href = \"test2/cards.html\">4 color cards</a></li>" +
+								"<li class = \"divider\"></li>" +
 								"<li class = \"has-dropdown\">" +
 									"<a id = \"id\"></a>" +
 									"<ul class = \"dropdown\">" +
