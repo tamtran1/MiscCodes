@@ -27,18 +27,17 @@ var TopMenuBarIconHTML = "<div id = \"toggle-topbar-menu-icon\">" +
 								"<a><span>menu</span></a>" +
 							"</li>" +
 						"</div>";
-						
+
 var TopBarSectionHTML = "<section id = \"top-bar-section\" class = \"top-bar-section\">" +
 							"<ul class = \"right\">" +
 								"<li class = \"divider\"></li>" +
-								"<li><a href = \"test2/cards.html\">4 color cards</a></li>" +
-								"<li class = \"divider\"></li>" +
 								"<li class = \"has-dropdown\">" +
-									"<a id = \"id\"></a>" +
+									"<a id = \"id\" href=\"\" disabled></a>" +
 									"<ul class = \"dropdown\">" +
 										"<li class = \"has-dropdown\">" +
-											"<a>Others</a>" +
+											"<a href=\"\" disabled>Others</a>" +
 											"<ul class = \"dropdown\">" +
+												"<li><a href = \"4colorCards/cards.html\">4 color cards</a></li>" +
 												"<li><a href = \"test/test.html\">test</a></li>" +
 												"<li><a href = \"roll_a_ball/index.html\">roll a ball</a></li>" +
 												"<li><a href = \"planes_for_hire/index.html\">cmsc447</a></li>" +
@@ -51,6 +50,8 @@ var TopBarSectionHTML = "<section id = \"top-bar-section\" class = \"top-bar-sec
 							"</ul>";
 						"</section>";
 
+
+
 var BreadCrumbPanelHTML = "<nav class = \"breadcrumbs\"></nav>";
 
 var sessionErr = "<div style = \"width : 300px\" class = \"small-6 small-centered large-4 columns\"><br><err style =\"color: red\">" +
@@ -59,10 +60,8 @@ var sessionErr = "<div style = \"width : 300px\" class = \"small-6 small-centere
 	"</err></div>";
 
 /*
- * this is the first function that gets called when this script gets loaded, as a result this script should be placed
- * at the end html document.
- * furthermore, writing the function this way causes it to automatically invoke when the script is loaded.
- * I'm not sure what its called
+ * this is a self invoking function, this is the first function that gets called when this script gets loaded,
+ * as a result this script should be placed at the end html document.
  */
 (function () {checkSession ();} ());
 	
