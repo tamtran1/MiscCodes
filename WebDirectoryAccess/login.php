@@ -40,7 +40,8 @@
 				$_SESSION['login'] = $_POST['userName']; //creates a session for this user, and keep track of their activity
 				$_SESSION['dir'] = 'stuff'; //subdirectory relative to the directory containing the main index.html file 
 				$_SESSION['lvl'] = 1; //1 directory deep, directory containing index.html is main directory, or lvl 0 
-				
+				if (!file_exists ('stuff')){ mkdir ('stuff', 0777); } // create this directory if it doesn't exist
+
 				$dataArr = array ("id" => $_SESSION['login'], "dir" => $_SESSION['dir'], "lvl" => $_SESSION['lvl']); //construct the list of data
 				print (json_encode ($dataArr)); //encode it into a json object and send it back to the client
 				fclose ($data);
