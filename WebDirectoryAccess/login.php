@@ -35,7 +35,7 @@
 		$data = fopen ("data.dat", "r") or die ("Unable to open file!"); //check the login data with data on record, stored in a file
 		
 		while (!feof ($data)) {
-			$dataContent = explode("|", fgets($data)); //login is check by exhausting every record entry 
+			$dataContent = explode("|", rtrim(fgets($data))); //login is check by exhausting every record entry 
 			if ($dataContent[0] && password_verify($_POST['userName'], $dataContent[0]) && password_verify($_POST['password'], $dataContent[1])) {
 				$_SESSION['login'] = $_POST['userName']; //creates a session for this user, and keep track of their activity
 				$_SESSION['dir'] = 'stuff'; //subdirectory relative to the directory containing the main index.html file 
