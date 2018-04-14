@@ -50,8 +50,6 @@ var TopBarSectionHTML = "<section id = \"top-bar-section\" class = \"top-bar-sec
 							"</ul>";
 						"</section>";
 
-
-
 var BreadCrumbPanelHTML = "<nav class = \"breadcrumbs\"></nav>";
 
 var sessionErr = "<div style = \"width : 300px\" class = \"small-6 small-centered large-4 columns\"><br><err style =\"color: red\">" +
@@ -148,7 +146,7 @@ function login(arg1, arg2) {
 		}
 		
 		if (arg1 && arg2) { //if both argument are satisfied
-			var dataObj = JSON.parse (arg1);			
+			var dataObj = JSON.parse (arg1);
 			initTopPanels (dataObj.id); //log in succeed, initialize the top panels
 			$(document).foundation (); //run the foundation script. This line is important to make the web app work !!
 			chDir(dataObj.lvl, dataObj.dir); //go to designated directory
